@@ -9,4 +9,4 @@ Route::get('/customer', [CustomerController::class, 'index']);
 Route::get('/customer/{id}', [CustomerController::class, 'view']);
 Route::post('/customer', [CustomerController::class, 'create']);
 Route::put('/customer/{id}', [CustomerController::class, 'update']);
-Route::delete('/customer/{id}', [CustomerController::class, 'destroy']);
+Route::delete('/customer/{id}', [CustomerController::class, 'delete']);

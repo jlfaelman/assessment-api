@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Database\QueryException;
 use App\Models\Customers;
 use Illuminate\Http\Request;
 
@@ -12,8 +12,8 @@ class CustomerController extends Controller
         try {
             $items = Customers::all();
             return response()->json($items);
-        } catch (Exception  $e) {
-            \Log::error("Error on: " . $e->getMessage());
+        } catch (QueryException   $e) {
+            return response()->json(['error' => 'An error occurred.'], 500);
         }
 
     }
@@ -22,24 +22,26 @@ class CustomerController extends Controller
     {
         try {
             $item = Customers::find($id);
-        return response()->json($item);
-        } catch (Exception  $e) {
-            \Log::error("Error on:" . $e->getMessage());
+            return response()->json($item);
+        } catch (QueryException   $e) {
+            return response()->json(['error' => 'An error occurred.'], 500);
         }
 
-        
     }
 
     public function create(Request $request)
     {
         try {
-            error_log($request);
             $item = Customers::create($request->all());
             return response()->json($item, 201);
-        } catch (Exception  $e) {
-            \Log::error("Error on:" . $e->getMessage());
+        } catch (QueryException   $e) {
+            error_log($e);
+            if ($e->errorInfo[1] == 19) {
+                \Log::error("Duplicate entry for email: " . $request->email);
+                return response()->json(['error' => 'Email address already exists.'], 400);
+            }
         }
-        
+
     }
 
     public function update(Request $request, $id)
@@ -48,10 +50,10 @@ class CustomerController extends Controller
             $item = Customers::find($id);
             $item->update($request->all());
             return response()->json($item, 200);
-        } catch (Exception  $e) {
-            \Log::error("Error on:" . $e->getMessage());
+        } catch (QueryException   $e) {
+            return response()->json(['error' => 'An error occurred.'], 500);
         }
-        
+
     }
 
     public function delete($id)
@@ -59,8 +61,8 @@ class CustomerController extends Controller
         try {
             Customer::destroy($id);
             return response()->json(null, 204);
-        } catch (Exception  $e) {
-            \Log::error("Error on:" . $e->getMessage());
+        } catch (QueryException   $e) {
+            return response()->json(['error' => 'An error occurred.'], 500);
         }
     }
 }
