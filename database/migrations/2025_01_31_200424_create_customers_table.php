@@ -3,6 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Ramsey\Uuid\Guid\Guid;
+use Ramsey\Uuid\Guid\GuidInterface;
 
 return new class extends Migration
 {
@@ -12,11 +14,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('customers', function (Blueprint $table) {
-            $table->id();
-            $table->string('first_name');
-            $table->string('last_name');
+            $table->id(); 
+            $table->string('firstName');
+            $table->string('lastName');
             $table->string('email')->unique();
-            $table->string('contact_number')->nullable();
+            $table->string('contactNumber')->nullable();
             $table->timestamps();
         });
     }
