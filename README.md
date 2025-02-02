@@ -10,11 +10,11 @@
 
 ## Installation
 
-Follow the steps below to set up the project on your local machine:
+###Follow the steps below to set up the project on your local machine:
 
-Steps to run locally:
-    git clone https://github.com/jlfaelman/assessment-client
-    cd assessment-client
+##Steps to run locally:
+    git clone [https://github.com/jlfaelman/assessment-client](https://github.com/jlfaelman/assessment-api)
+    cd assessment-api
     composer install
     npm install
     php artisan migrate
